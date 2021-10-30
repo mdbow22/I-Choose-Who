@@ -18,9 +18,11 @@
   "homepage": "https://github.com/mdbow22/I-Choose-Who#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "connect-session-sequelize": "^7.1.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
+    "express-session": "^1.17.2",
     "express-sessions": "^1.0.6",
     "ioredis": "^4.28.0",
     "mysql2": "^2.3.2",
