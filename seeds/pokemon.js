@@ -1,0 +1,1 @@
+const { Pokemon } = require('../models');
