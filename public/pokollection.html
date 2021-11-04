@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>I Choose Who?</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../public/css/style.css" >
+  <script src="https://kit.fontawesome.com/bcb47621ed.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="./index.html">
+        <img src="./img/icw_hollow.png" alt="I Choose Who?">
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navMenu" class="navbar-menu">
+      <div class="navbar-start">
+
+        <a href="./index.html" class="navbar-item">
+          Home
+        </a>
+
+        <a href="./collection.html" class="navbar-item">
+          My Pokollection
+        </a>
+
+        <a href="./recommendations.html" class="navbar-item">
+          Get Recomendations
+        </a>
+
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary">
+              <strong>Log in / Sign up</strong>
+            </a>
+            <a class="button">
+              Log out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <section class="hero is-small is-primary">
+    <div class="hero-body">
+    </div>
+  </section>
+
+  
+  <main class="section">
+    <div class="container">
+      <div class="columns is-multiline">
+        <div class="column">
+          <a href="./add" class="button is-link is-rounded">Add New Pokemon</a>
+        </div>
+
+        <!-- Sort and grouping controls: hide when there are fewer than 2 pokemon in the user's collection -->
+        <div class="column is-12-touch">
+          <div class="field is-horizontal">
+            <!-- <label class="label is-medium mr-2">Sort by: </label> -->
+            <div class="control has-icons-left">
+              <div class="select is-arrowless is-info">
+                <select id="sort-by-drowdown" title="sort-by">
+                  <option>Number (low to high)</option>
+                  <option>Number (high to low)</option>
+                  <option>Name (A to Z)</option>
+                  <option>Name (Z to A)</option>
+                  <option>Type (A to Z)</option>
+                  <option>Type (Z to A)</option>
+                  <option>Date Added (newest to oldest)</option>
+                  <option>Date Added (oldest to newest)</option>
+                </select>
+                <div class="icon is-left">
+                  <i class="fas fa-sort has-text-info"></i>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+        <div class="column is-narrow">
+          <label class="checkbox is-size-5">
+            <input id="show-favorites-first-checkbox" type="checkbox" />
+            Show favorites first
+          </label>
+        </div>
+        <!-- end of sort and grouping controls -->
+      </div>
+
+      <!-- Pokemon collection card -->
+      <!-- tall card designs w/ large image -->
+      <div class="columns is-multiline">
+        <div class="column is-half is-one-third-desktop is-one-quarter-widescreen">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                <span class="card-pokemon-number">52</span>.&nbsp;<span class="card-pokemon-name">Meowth</span>
+              </p>
+              <button class="card-header-icon is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+            </header>
+          
+            <div class="card-image">
+              <figure class="image is-1by1">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">Meowth</p>
+                  <p class="subtitle is-6">Variant / Type</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                </ul>
+              </div>
+            </div>
+            <!-- <footer class="card-footer">
+              <a href="#" class="card-footer-item is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </a>
+            </footer> -->
+          </div>
+        </div>
+
+        <div class="column is-half is-one-third-desktop is-one-quarter-widescreen">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                <span class="card-pokemon-number">54</span>.&nbsp;<span class="card-pokemon-name">Psyduck</span>
+              </p>
+              <button class="card-header-icon is-favorite-pokemon is-hidden" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon is-not-favorite-pokemon" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+            </header>
+          
+            <div class="card-image">
+              <figure class="image is-1by1">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title">Variant / Type</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                </ul>
+              </div>
+            </div>
+            <!-- <footer class="card-footer">
+              <a href="#" class="card-footer-item is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </a>
+            </footer> -->
+          </div>
+        </div>
+
+        <div class="column is-half is-one-third-desktop is-one-quarter-widescreen">
+          <div class="card">
+            <!-- <header class="card-header">
+              <p class="card-header-title">
+                <span class="card-pokemon-number">52</span>.&nbsp;<span class="card-pokemon-name">Meowth</span>
+              </p>
+              <button class="card-header-icon is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+            </header> -->
+          
+            <div class="card-image">
+              <figure class="image is-1by1">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/52.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">Meowth</p>
+                  <p class="subtitle is-6">Variant / Type</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                </ul>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </a>
+            </footer>
+          </div>
+        </div>
+
+        <div class="column is-half is-one-third-desktop is-one-quarter-widescreen">
+          <div class="card">
+            <!-- <header class="card-header">
+              <p class="card-header-title">
+                <span class="card-pokemon-number">52</span>.&nbsp;<span class="card-pokemon-name">Meowth</span>
+              </p>
+              <button class="card-header-icon is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+            </header> -->
+          
+            <div class="card-image">
+              <figure class="image is-1by1">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">Psyduck</p>
+                  <p class="subtitle is-6">Variant / Type</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                </ul>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item is-favorite-pokemon is-hidden" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item is-not-favorite-pokemon" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </a>
+            </footer>
+          </div>
+        </div>
+
+        <div class="column is-half is-one-third-desktop is-one-quarter-widescreen">
+          <div class="card">
+            <!-- <header class="card-header">
+              <p class="card-header-title">
+                <span class="card-pokemon-number">52</span>.&nbsp;<span class="card-pokemon-name">Meowth</span>
+              </p>
+              <button class="card-header-icon is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+            </header> -->
+          
+            <div class="card-image">
+              <figure class="image is-1by1">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/55.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <!-- <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/55.png" alt="Placeholder image">
+                  </figure>
+                </div>
+              </div> -->
+              
+              <div class="content">
+                <div class="media-content">
+                  <p class="title is-4">Psyduck</p>
+                  <p class="subtitle is-6">Variant / Type</p>
+                </div>
+                <ul>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                </ul>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item is-favorite-pokemon is-hidden" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item is-not-favorite-pokemon" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </a>
+            </footer>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-multiline">
+        <div class="column is-half is-one-third-desktop is-one-quarter-widescreen">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                <span class="card-pokemon-number">52</span>.&nbsp;<span class="card-pokemon-name">Meowth</span>
+              </p>
+              <button class="card-header-icon is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </button>
+              <button class="card-header-icon remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </button>
+            </header>
+          
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">Variant / Type</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                  <li>Property: value</li>
+                </ul>
+              </div>
+            </div>
+            <!-- <footer class="card-footer">
+              <a href="#" class="card-footer-item is-favorite-pokemon" aria-label="unfavorite pokemon">
+                <span class="icon">
+                  <i class="fas fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+                <span class="icon">
+                  <i class="far fa-star has-text-warning"></i>
+                </span>
+              </a>
+              <a href="#" class="card-footer-item remove-pokemon" aria-label="remove pokemon from collection">
+                <span class="icon has-text-grey-light">
+                  <i class="fas fa-times"></i>
+                </span>
+              </a>
+            </footer> -->
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            <span class="card-pokemon-number">54</span>.&nbsp;<span class="card-pokemon-name">Meowth</span>
+          </p>
+          <button class="card-header-icon is-favorite-pokemon" aria-label="unfavorite pokemon">
+            <span class="icon">
+              <i class="fas fa-star has-text-warning"></i>
+            </span>
+          </button>
+          <button class="card-header-icon is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+            <span class="icon">
+              <i class="far fa-star has-text-warning"></i>
+            </span>
+          </button>
+          <button class="card-header-icon remove-pokemon" aria-label="remove pokemon from collection">
+            <span class="icon has-text-grey-light">
+              <i class="fas fa-times"></i>
+            </span>
+          </button>
+        </header>
+        
+        <div class="card-image">
+          <figure class="image is-1by1">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/54.png" alt="Placeholder image">
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-48x48">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <p class="title is-4">Meowth</p>
+              <p class="subtitle is-6">Variant / Type</p>
+            </div>
+          </div>
+      
+          <div class="content">
+            <ul>
+              <li>Property: value</li>
+              <li>Property: value</li>
+              <li>Property: value</li>
+              <li>Property: value</li>
+            </ul>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a href="#" class="card-footer-item is-favorite-pokemon" aria-label="unfavorite pokemon">
+            <span class="icon">
+              <i class="fas fa-star has-text-warning"></i>
+            </span>
+          </a>
+          <a href="#" class="card-footer-item is-not-favorite-pokemon is-hidden" aria-label="favorite pokemon">
+            <span class="icon">
+              <i class="far fa-star has-text-warning"></i>
+            </span>
+          </a>
+          <a href="#" class="card-footer-item remove-pokemon" aria-label="remove pokemon from collection">
+            <span class="icon has-text-grey-light">
+              <i class="fas fa-times"></i>
+            </span>
+          </a>
+        </footer>
+      </div> -->
+    </div>
+  </main>
+
+
+
+
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>I Choose Who?</strong> by Brian Baker, Matt Bow, and Greg Riveroll. The source code is licensed
+        <a href="https://opensource.org/licenses/AGPL-3.0">AGPL-3.0</a> and is available on <a
+          href="https://github.com/mdbow22/I-Choose-Who">GitHub</a>. Website content is used at the courtesy of <a
+          href="https://pokeapi.co/">PokéAPI</a> and <a href="https://pogoapi.net/">PoGo API</a>.
+        "Pokémon" and "Pokémon Go" trademarks are held by their respective trademark owners, who have no affiliation
+        with this project.
+      </p>
+    </div>
+  </footer>
+  <script src="src/nav.js"></script>
+</body>
+
+</html>
