@@ -11,7 +11,7 @@
 <body>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="./index.html">
+      <a class="navbar-item" href="/">
         <img src="./img/icw_hollow.png" alt="I Choose Who?">
       </a>
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
@@ -24,15 +24,15 @@
     <div id="navMenu" class="navbar-menu">
       <div class="navbar-start">
 
-        <a href="./index.html" class="navbar-item">
+        <a href="/" class="navbar-item">
           Home
         </a>
 
-        <a href="./collection.html" class="navbar-item">
+        <a href="/collection" class="navbar-item">
           My Pokollection
         </a>
 
-        <a href="./recommendations.html" class="navbar-item">
+        <a href="/recommendations" class="navbar-item">
           Get Recomendations
         </a>
 
@@ -42,11 +42,11 @@
         <div class="navbar-item">
           <div class="buttons">
             {{#if loggedIn}}
-            <button id="logout-button" class="button">
-              Log out
-            </button>
+            <a id="logout-button" class="button is-primary">
+              <strong>Log out</strong>
+            </a>
             {{else}}
-            <a class="button is-primary">
+            <a href="/login" class="button is-primary">
               <strong>Log in / Sign up</strong>
             </a>
             {{/if}}
