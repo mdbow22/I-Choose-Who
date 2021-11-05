@@ -21,7 +21,6 @@ UsersPokemon.init(
         },
         favorite: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
             defaultValue: 0
         }
     },
