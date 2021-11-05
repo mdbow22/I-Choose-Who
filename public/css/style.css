@@ -10,11 +10,16 @@
 }
 
 .select.is-arrowless select {
-  padding-right: 0;
+  padding-right: 0.5em;
 }
 
 /* Pokemon card styles */
 .card {
   /* 475px is the size of the official-artwork image */
   width: calc(475px / 1.5); 
+}
+
+/* Add pokemon form styles */
+.search-list {
+  width: min(80%, 600px);
 }
