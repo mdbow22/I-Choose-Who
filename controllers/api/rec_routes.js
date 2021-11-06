@@ -3,7 +3,8 @@ const { getRecommendations } = require('../rec_logic/index');
 const { recsFromType } = require('../rec_logic/byType');
 const { Pokemon, User } = require('../../models');
 
-
+// route for getting recommendations based on pokemon used by opponent
+// TODO: refactor to a get request using URL parameters
 router.post('/', async (req, res) => {
     try {
         //get user's pokemon
@@ -15,7 +16,7 @@ router.post('/', async (req, res) => {
 
         //create an array of pokemon, where types become array instead of separate properties
         const collection = userCollection.pokemons.map((pokemon) => {
-            if(pokemon.type2) {
+            if (pokemon.type2) {
                 return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1, pokemon.type2]};
             } else {
                 return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1]};
@@ -33,28 +34,30 @@ router.post('/', async (req, res) => {
 
 });
 
-router.post('/:type', async (req, res) => {
+
+// route for getting recommendations based on single type used by opponent
+router.get('/:type', async (req, res) => {
 
     try {
         //get user's pokemon
-    const userCollection = await User.findByPk(req.session.userId, {
-        include: [{
-                model: Pokemon
-                }]
-    } /*req.session.userId*/);
+        const userCollection = await User.findByPk(req.session.userId, {
+            include: [{
+                    model: Pokemon
+                    }]
+        } /*req.session.userId*/);
 
-    //create an array of pokemon, where types become array instead of separate properties
-    const collection = userCollection.pokemons.map((pokemon) => {
-        if(pokemon.type2) {
-            return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1, pokemon.type2]};
-        } else {
-            return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1]};
-        }
-    });
+        //create an array of pokemon, where types become array instead of separate properties
+        const collection = userCollection.pokemons.map((pokemon) => {
+            if(pokemon.type2) {
+                return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1, pokemon.type2]};
+            } else {
+                return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1]};
+            }
+        });
 
-    const recommendations = await recsFromType(collection, req.params.type);
+        const recommendations = await recsFromType(collection, req.params.type);
 
-    res.status(200).json(recommendations);
+        res.status(200).json(recommendations);
 
     } catch (err) {
         console.log(err);
