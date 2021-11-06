@@ -122,10 +122,9 @@ const getTypeInfo = async (enemyCollection) => {
     return enemyTeam;
 }
 
-const getRecommendations = async (userId, enemy) => {
+const getRecommendations = async (userTeam, enemy) => {
 
     //Placeholder for call to database to fetch user's collection
-    const userTeam = await team(collection);
     const enemyTeam = await getTypeInfo(enemy);
 
     /**

@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
         //get recommendations
         const recommendations = await getRecommendations(collection, req.body.pokemon);
 
-        //res.status(200).json(recommendations);
+        res.status(200).json(recommendations);
     } catch (err) {
         res.status(500).json(err);
         console.log(err);
