@@ -14,4 +14,17 @@ Pokemon.belongsToMany(User, {
     otherKey: 'user_id'
 });
 
+UsersPokemon.belongsTo(User, {
+    foreignKey: 'user_id'
+});
+UsersPokemon.belongsTo(Pokemon, {
+    foreignKey: 'pokemon_id'
+});
+Pokemon.hasMany(UsersPokemon, {
+    foreignKey: 'pokemon_id'
+});
+User.hasMany(UsersPokemon, {
+    foreignKey: 'user_id'
+});
+
 module.exports = { User, Pokemon, UsersPokemon };
