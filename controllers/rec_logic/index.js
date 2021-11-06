@@ -5,7 +5,7 @@ const {Op} = require('sequelize');
 const P = new Pokedex();
 
 //when pulling pokemon from collection, map to have just name (and include -alola or -galar for those)
-const collection = ['Vaporeon','Flareon','Jolteon','Leafeon','Glaceon','Umbreon','Espeon','Sylveon','Dragonite','Graveler','Sandslash','Steelix','Eevee','Scizor','Machamp','Muk'];
+const collection = ['Vaporeon','Flareon','Jolteon','Leafeon','Glaceon','Umbreon','Espeon','Sylveon','Dragonite','Graveler','Sandslash','Steelix','Eevee','Scizor','Machamp','Misdreavus'];
 
 //have enemy team come in as array to make passing it to pokedex easier
 let enemyCollection = ['Zubat','Tentacool','Tauros','Dragonite'];
@@ -33,11 +33,11 @@ const team = async (enemyPokemon) => {
 };
 
 //Add strengths and weaknesses to user and enemy teams
-const getTypeInfo = async () => {
+const getTypeInfo = async (enemyCollection) => {
 
     //Get type info from database
     const enemyTeam = await team(enemyCollection);
-    const userTeam = await team(collection);
+    
 
     //Determine enemy weaknesses
     for(const pokemon of enemyTeam) {
@@ -119,12 +119,72 @@ const getTypeInfo = async () => {
         }
     } */
 
-    console.log(enemyTeam);
-    //console.log(userTeam);
+    return enemyTeam;
 }
 
-const getRecommendations = async () => {
+const getRecommendations = async (userId, enemy) => {
 
+    //Placeholder for call to database to fetch user's collection
+    const userTeam = await team(collection);
+    const enemyTeam = await getTypeInfo(enemy);
+
+    /**
+     * Iterate over enemy team:
+     * 
+     * If enemyMon has immunity = exclude all in collection that are that single type
+     * 
+     * If enemyMon has weak_to4x category, find all pokemon in collection:
+     *  Best pokemon = 2 4xWeak types or 4xWeak
+     *  Better pokemon = 2 weak types
+     *  Good pokemon = 1 weak type and no resistances
+     * 
+     * 
+     * If enemyMon doesn't have weak_to4x category:
+     *  best = 2 weak types
+     *  better = 1 weak and no resistances
+     *  good = no resistances
+     * 
+     * If list of recommendations empty: "You have no pokemon for this battle"
+     */
+    
+    for(const pokemon of enemyTeam) {
+        pokemon.best = [];
+        pokemon.better = [];
+        pokemon.good = [];
+
+        userTeam.forEach((userMon) => {
+            //determine options
+
+            //options if pokemon has 4xweak types
+            if(pokemon.weak_to4x.length) {
+
+                //best options
+                pokemon.weak_to4x.forEach((type) => {
+                    if(userMon.types.includes(type)) {
+                        pokemon.best.push(userMon);
+                    }
+                });
+
+                //better options
+                if(pokemon.weak_to.includes(userMon.types[0]) && pokemon.weak_to.includes(userMon.types[1])) {
+                    pokemon.better.push(userMon);
+                //good options
+                } else if (pokemon.weak_to.includes(userMon.types[0]) || pokemon.weak_to.includes(userMon.types[1])) {
+                    pokemon.good.push(userMon);
+                }
+
+            } else {
+                //best options if no weak_to4x
+                if(pokemon.weak_to.includes(userMon.types[0]) && pokemon.weak_to.includes(userMon.types[1])) {
+                    pokemon.best.push(userMon);
+                }
+            }
+
+        });
+        
+    }
+
+    return enemyTeam;
 };
 
-getTypeInfo();
+getRecommendations(1, enemyCollection).then((data) => {console.log(data[0].best)});
