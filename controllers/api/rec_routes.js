@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { getRecommendations } = require('../rec_logic/index');
+const { recsFromType } = require('../rec_logic/byType');
 const { Pokemon, User } = require('../../models');
 
 
@@ -15,9 +16,9 @@ router.post('/', async (req, res) => {
         //create an array of pokemon, where types become array instead of separate properties
         const collection = userCollection.pokemons.map((pokemon) => {
             if(pokemon.type2) {
-                return {name: pokemon.name, types: [pokemon.type1, pokemon.type2]};
+                return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1, pokemon.type2]};
             } else {
-                return {name: pokemon.name, types: [pokemon.type1]};
+                return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1]};
             }
         });
 
@@ -31,5 +32,34 @@ router.post('/', async (req, res) => {
     }
 
 });
+
+router.post('/:type', async (req, res) => {
+
+    try {
+        //get user's pokemon
+    const userCollection = await User.findByPk(req.session.userId, {
+        include: [{
+                model: Pokemon
+                }]
+    } /*req.session.userId*/);
+
+    //create an array of pokemon, where types become array instead of separate properties
+    const collection = userCollection.pokemons.map((pokemon) => {
+        if(pokemon.type2) {
+            return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1, pokemon.type2]};
+        } else {
+            return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1]};
+        }
+    });
+
+    const recommendations = await recsFromType(collection, req.params.type);
+
+    res.status(200).json(recommendations);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+})
 
 module.exports = router;
