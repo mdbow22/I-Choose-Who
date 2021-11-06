@@ -1,0 +1,25 @@
+/* is-arrowless styles */
+.select.is-arrowless::after {
+  /* important used to override default styling, which has higher specificity */
+  display: none !important;
+  content: "" !important;
+  margin: 0 !important;
+  border: none !important;
+  padding: none !important;
+  width: 0 !important;
+}
+
+.select.is-arrowless select {
+  padding-right: 0.5em;
+}
+
+/* Pokemon card styles */
+.card {
+  /* 475px is the size of the official-artwork image */
+  width: calc(475px / 1.5); 
+}
+
+/* Add pokemon form styles */
+.search-list {
+  width: min(80%, 600px);
+}

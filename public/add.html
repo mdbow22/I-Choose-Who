@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>I Choose Who?</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="../public/css/style.css" >
+  <script src="https://kit.fontawesome.com/bcb47621ed.js" crossorigin="anonymous"></script>
+  <link rel="icon" 
+      type="image/png" 
+      href="favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.min.css" integrity="sha512-bkB9w//jjNUnYbUpATZQCJu2khobZXvLP5GZ8jhltg7P/dghIrTaSJ7B/zdlBUT0W/LXGZ7FfCIqNvXjWKqCYA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+  
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="./index.html">
+        <img src="./img/icw_hollow.png" alt="I Choose Who?">
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navMenu" class="navbar-menu">
+      <div class="navbar-start">
+
+        <a href="./index.html" class="navbar-item">
+          Home
+        </a>
+
+        <a href="./collection.html" class="navbar-item">
+          My Pokollection
+        </a>
+
+        <a href="./recommendations.html" class="navbar-item">
+          Get Recomendations
+        </a>
+
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary">
+              <strong>Log in / Sign up</strong>
+            </a>
+            <a class="button">
+              Log out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <section class="hero is-small is-primary">
+    <div class="hero-body">
+    </div>
+  </section>
+
+  
+  <main class="section">
+    <div class="container">
+      <h1 class="title">Add New Pokémon to Your Collection</h1>
+      
+      
+      
+      <div class="field">
+        <label class="label" for="pokemon-to-add">Pick your pokémon</label>
+        <div class="control">
+          <div class="select is-multiple search-list">
+            <select id="pokemon-to-add" required multiple>
+              <option value="">Click or type here to search pokémon</option>
+              <!-- TODO propogate from server instead of hardcoding -->
+              <option value="bulbasaur">1. Bulbasar</option>
+              <option value="ivysaur">2. Ivysaur</option>
+              <option value="venusaur">3. Venusaur</option>
+              <option value="charmander">4. Charmander</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      
+      <!-- <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox">
+            Favorite
+          </label>
+        </div>
+      </div> -->
+      
+      
+      <div class="field is-grouped">
+        <div class="control">
+          <button id="submit-button" class="button is-link">Submit</button>
+        </div>
+        <div class="control">
+          <a href="/collection" class="button is-link is-light">Cancel</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+
+
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>I Choose Who?</strong> by Brian Baker, Matt Bow, and Greg Riveroll. The source code is licensed
+        <a href="https://opensource.org/licenses/AGPL-3.0">AGPL-3.0</a> and is available on <a
+          href="https://github.com/mdbow22/I-Choose-Who">GitHub</a>. Website content is used at the courtesy of <a
+          href="https://pokeapi.co/">PokéAPI</a> and <a href="https://pogoapi.net/">PoGo API</a>.
+        "Pokémon" and "Pokémon Go" trademarks are held by their respective trademark owners, who have no affiliation
+        with this project.
+      </p>
+    </div>
+  </footer>
+  <script src="js/nav.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js" integrity="sha512-pF+DNRwavWMukUv/LyzDyDMn8U2uvqYQdJN0Zvilr6DDo/56xPDZdDoyPDYZRSL4aOKO/FGKXTpzDyQJ8je8Qw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/add_form.js"></script>
+</body>
+
+</html>
