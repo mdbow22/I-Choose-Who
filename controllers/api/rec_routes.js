@@ -3,7 +3,8 @@ const { getRecommendations } = require('../rec_logic/index');
 const { recsFromType } = require('../rec_logic/byType');
 const { Pokemon, User } = require('../../models');
 
-
+// route for getting recommendations based on pokemon used by opponent
+// TODO: refactor to a get request using URL parameters
 router.post('/', async (req, res) => {
     try {
         //get user's pokemon
@@ -36,7 +37,9 @@ router.post('/', async (req, res) => {
 
 });
 
-router.post('/:type', async (req, res) => {
+
+// route for getting recommendations based on single type used by opponent
+router.get('/:type', async (req, res) => {
 
     try {
         //get user's pokemon
@@ -58,9 +61,9 @@ router.post('/:type', async (req, res) => {
         }
     });
 
-    const recommendations = await recsFromType(collection, req.params.type);
+        const recommendations = await recsFromType(collection, req.params.type);
 
-    res.status(200).json(recommendations);
+        res.status(200).json(recommendations);
 
     } catch (err) {
         console.log(err);
