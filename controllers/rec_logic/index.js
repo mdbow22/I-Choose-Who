@@ -201,4 +201,4 @@ const getRecommendations = async (userId, enemy) => {
     return enemyTeam;
 };
 
-getRecommendations(1, enemyCollection).then((data) => {console.log(data[0].best)});
+module.exports = { getRecommendations };
