@@ -23,6 +23,12 @@ Pokemon.init(
         },
         variant_name: {
             type: DataTypes.STRING
+        },
+        type1: {
+            type: DataTypes.STRING
+        },
+        type2: {
+            type: DataTypes.STRING
         }
     },
     {

@@ -5,6 +5,12 @@ class UsersPokemon extends Model {};
 
 UsersPokemon.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
         user_id: {
             type: DataTypes.INTEGER,
             references: {
@@ -21,7 +27,6 @@ UsersPokemon.init(
         },
         favorite: {
             type: DataTypes.BOOLEAN,
-            allowNull: false,
             defaultValue: 0
         }
     },
