@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const withAuth = require('../utils/auth');
-const { User, Pokemon, UsersPokemon } = require('../models')
+const { User, Pokemon, UsersPokemon } = require('../models');
+// const sequelize = require('../config/connection');
+const {Op} = require('sequelize');
 
 router.get('/', async (req, res) => {
     res.render('homepage', { loggedIn: req.session.loggedIn })
@@ -46,6 +48,43 @@ router.get('/collection', withAuth, async (req, res) => {
 
 router.get('/recommendations', withAuth, async (req, res) => {
     res.render('recommendations', { loggedIn: req.session.loggedIn })
+});
+
+router.get('/add', withAuth, async (req, res) => {
+    try {
+        // get all pokemon and include user data when it matches
+        // the user logged in, then filter out when user data is
+        // defined.
+        // TODO: refactor to do filtering in SQL query
+        const pokemonData = await Pokemon.findAll({
+            include: [{
+                model: UsersPokemon,
+                where: {
+                    user_id: req.session.userId
+                },
+                required: false
+            }],
+            order: [['pokedex_id', 'ASC'], ['variant', 'ASC']]
+        });
+        // const pokemonData = await sequelize.query(
+        //     `select * from pokemon
+        //     left join users_pokemon
+        //         on pokemon.id = users_pokemon.pokemon_id
+        //     where user_id NOT IN (${req.session.userId}) OR user_ID IS NULL;
+        //     `,
+        //     {
+        //         model: Pokemon,
+        //         mapToModel: true
+        //     }
+        // );
+        const pokemon = pokemonData.map(pkModel => pkModel.get({plain: true}))
+                                   .filter(pkModel => pkModel.users_pokemons.length == 0 );
+        console.log(pokemon[20]);
+        res.render('add', { loggedIn: req.session.loggedIn, pokemon });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err);
+    }
 });
 
 router.get('/login', async (req, res) => {
