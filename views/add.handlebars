@@ -1,0 +1,39 @@
+    <div class="container"><form id="add-pokemon-form">
+      <h1 class="title">Add New Pokémon to Your Collection</h1>
+      
+      
+      
+      <div class="field">
+        <label class="label" for="pokemon-to-add">Pick your pokémon</label>
+        <div class="control">
+          <div class="select is-multiple search-list">
+            <select id="pokemon-to-add" required multiple>
+              <option value="">Click or type here to search pokémon</option>
+              {{#each pokemon as |pokemon|}}
+                <option value="{{pokemon.id}}">{{pokemon.pokedex_id}}.
+                  {{pokemon.name}}{{#if pokemon.variant}},
+                    {{pokemon.variant}} ({{pokemon.type1}}{{#if pokemon.type2}}
+                                                             / {{pokemon.type2}}{{/if}})
+                  {{/if}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      <div class="field is-grouped">
+        <div class="control">
+          <button id="submit-button" class="button is-link">Submit</button>
+        </div>
+        <div class="control">
+          <a href="/collection" class="button is-link is-light">Cancel</a>
+        </div>
+      </div>
+
+    </form></div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js" integrity="sha512-pF+DNRwavWMukUv/LyzDyDMn8U2uvqYQdJN0Zvilr6DDo/56xPDZdDoyPDYZRSL4aOKO/FGKXTpzDyQJ8je8Qw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/js/add_form.js"></script>
