@@ -79,7 +79,7 @@ router.get('/add', withAuth, async (req, res) => {
         // );
         const pokemon = pokemonData.map(pkModel => pkModel.get({plain: true}))
                                    .filter(pkModel => pkModel.users_pokemons.length == 0 );
-        console.log(pokemon[20]);
+        
         res.render('add', { loggedIn: req.session.loggedIn, pokemon });
     } catch (err) {
         console.error(err);
