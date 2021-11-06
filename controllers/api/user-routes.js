@@ -13,8 +13,10 @@ router.post('/', async (req, res) => {
             password: hashedPw,
         });
 
+        req.session.userId = newUser.id;
+        req.session.loggedIn = true;
+
         req.session.save(() => {
-            req.session.loggedIn = true;
             res.status(200).json(newUser);
         });
     } catch (err) {
