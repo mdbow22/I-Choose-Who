@@ -136,12 +136,12 @@ const getRecommendations = async (userId, enemy) => {
      * If enemyMon has weak_to4x category, find all pokemon in collection:
      *  Best pokemon = 2 4xWeak types or 4xWeak
      *  Better pokemon = 2 weak types
-     *  Good pokemon = 1 weak type and no resistances
+     *  Good pokemon = 1 weak type
      * 
      * 
      * If enemyMon doesn't have weak_to4x category:
      *  best = 2 weak types
-     *  better = 1 weak and no resistances
+     *  better = 1 weak
      *  good = no resistances
      * 
      * If list of recommendations empty: "You have no pokemon for this battle"
@@ -177,6 +177,20 @@ const getRecommendations = async (userId, enemy) => {
                 //best options if no weak_to4x
                 if(pokemon.weak_to.includes(userMon.types[0]) && pokemon.weak_to.includes(userMon.types[1])) {
                     pokemon.best.push(userMon);
+                //better options
+                } else if (pokemon.weak_to.includes(userMon.types[0]) || pokemon.weak_to.includes(userMon.types[1])) {
+                    pokemon.better.push(userMon);
+                //good options
+                } else if (userMon.types.length === 2) {
+                    //good options if double type
+                    if(!pokemon.resists.includes(userMon.types[0]) && !pokemon.resists.includes(userMon.types[1])) {
+                        pokemon.good.push(userMon);
+                    }
+                } else {
+                    //good options if single type
+                    if(!pokemon.resists.includes(userMon.types[0])) {
+                        pokemon.good.push(userMon);
+                    }
                 }
             }
 
