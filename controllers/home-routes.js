@@ -18,8 +18,11 @@ router.get('/collection', withAuth, async (req, res) => {
 
                 const pokemon = {};
     
+                pokemon["id"] = usersPokePlain.pokemons[i].id;
                 pokemon["pokedex_id"] = usersPokePlain.pokemons[i].pokedex_id;
                 pokemon["name"] = usersPokePlain.pokemons[i].name;
+                pokemon["type1"] = usersPokePlain.pokemons[i].type1;
+                pokemon["type2"] = usersPokePlain.pokemons[i].type2;
                 pokemon["variant"] = usersPokePlain.pokemons[i].variant;
                 pokemon["variant_name"] = usersPokePlain.pokemons[i].variant_name;
                 pokemon["favorite"] = usersPokePlain.pokemons[i].users_pokemon.favorite;
