@@ -123,6 +123,33 @@ const getTypeInfo = async (enemyCollection) => {
     return enemyTeam;
 }
 
+//get sprites from PokeApi
+const getPics = async (recResults) => {
+
+    //create array of pokemon to fetch
+    const pokemon = recResults.map(pokemon => {
+        if(pokemon.variant) {
+            //if pokemon is a variant, concatenate name with variant for pokeAPI
+            return `${pokemon.name.toLowerCase()}-${pokemon.variant}`;
+        } else {
+            return pokemon.name.toLowerCase();
+        }
+    });
+
+    //fetch data from PokeAPI
+    const pokeData = await P.getPokemonByName(pokemon);
+
+    const pics = pokeData.map((pokemon) => {
+        
+        return {
+            name: pokemon.species.name,
+            spriteUrl: pokemon.sprites.front_default,
+            variant: (pokemon.name.includes('alola') || pokemon.name.includes('galar')) ? pokemon.name.substring(pokemon.name.length - 5) : null
+        }
+        
+    })
+}
+
 const getRecommendations = async (userTeam, enemy) => {
 
     //Placeholder for call to database to fetch user's collection
@@ -226,6 +253,8 @@ const getRecommendations = async (userTeam, enemy) => {
         }
         
     }
+
+    enemyTeam = await getPics(enemyTeam);
 
     return enemyTeam;
 };
