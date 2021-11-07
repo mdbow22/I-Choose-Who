@@ -71,6 +71,33 @@ const recsFromType = async (userCollection, type) => {
         } 
     }
 
+    //limit each option to 8 with favorites taking precedence
+    //sort so favorites are first
+    typeData.best.sort((pokeA, pokeB) => {
+        return (pokeA.favorite > pokeB.favorite ) ? -1 : ((pokeB.favorite > pokeA.favorite) ? 1 : 0);
+    });
+
+    typeData.better.sort((pokeA, pokeB) => {
+        return (pokeA.favorite > pokeB.favorite ) ? -1 : ((pokeB.favorite > pokeA.favorite) ? 1 : 0);
+    });
+
+    typeData.good.sort((pokeA, pokeB) => {
+        return (pokeA.favorite > pokeB.favorite ) ? -1 : ((pokeB.favorite > pokeA.favorite) ? 1 : 0);
+    });
+
+    //eliminate options after 8
+    if(typeData.best.length > 8) {
+        typeData.best.splice(8);
+    }
+
+    if(typeData.better.length > 8) {
+        typeData.better.splice(8);
+    }
+
+    if(typeData.good.length > 8) {
+        typeData.good.splice(8);
+    }
+
     return typeData;
 };
 

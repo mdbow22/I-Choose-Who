@@ -20,11 +20,13 @@ router.post('/', async (req, res) => {
         //create an array of pokemon, where types become array instead of separate properties
         const collection = userCollection.pokemons.map((pokemon) => {
             if(pokemon.type2) {
-                return {name: pokemon.name, variant: pokemon.variant, favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1, pokemon.type2]};
+                return {name: pokemon.name, variant: pokemon.variant, favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1.toLowerCase(), pokemon.type2.toLowerCase()]};
             } else {
-                return {name: pokemon.name, variant: pokemon.variant,  favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1]};
+                return {name: pokemon.name, variant: pokemon.variant,  favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1.toLowerCase()]};
             }
         });
+
+        console.log(collection);
 
         //get recommendations
         const recommendations = await getRecommendations(collection, req.body.pokemon);
@@ -55,9 +57,9 @@ router.get('/:type', async (req, res) => {
     //create an array of pokemon, where types become array instead of separate properties
     const collection = userCollection.pokemons.map((pokemon) => {
         if(pokemon.type2) {
-            return {name: pokemon.name, variant: pokemon.variant, favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1, pokemon.type2]};
+            return {name: pokemon.name, variant: pokemon.variant, favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1.toLowerCase(), pokemon.type2.toLowerCase()]};
         } else {
-            return {name: pokemon.name, variant: pokemon.variant, favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1]};
+            return {name: pokemon.name, variant: pokemon.variant, favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1.toLowerCase()]};
         }
     });
 

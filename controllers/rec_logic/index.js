@@ -8,7 +8,7 @@ const P = new Pokedex();
 const collection = ['Vaporeon','Flareon','Jolteon','Leafeon','Glaceon','Umbreon','Espeon','Sylveon','Dragonite','Graveler','Sandslash','Steelix','Eevee','Scizor','Machamp','Misdreavus'];
 
 //have enemy team come in as array to make passing it to pokedex easier
-let enemyCollection = ['Zubat','Tentacool','Tauros','Dragonite'];
+let enemyCollection = [20,46,345,45];
 
 //Pull enemy pokemon from database with typing
 
@@ -16,16 +16,16 @@ const team = async (enemyPokemon) => {
     //Find pokemon in database - will have to figure out how to account for alolan/galarian pokemon
     const pokemon = await Pokemon.findAll({
         where: {
-            name: {[Op.in]: enemyPokemon}
+            id: {[Op.in]: enemyPokemon}
         }
     });
 
     const plainPokemon = pokemon.map((pokemon) => pokemon.get({plain: true}));
     const array = plainPokemon.map((pokemon) => {
         if(pokemon.type2) {
-            return {name: pokemon.name, types: [pokemon.type1.toLowerCase(), pokemon.type2.toLowerCase()]};
+            return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1.toLowerCase(), pokemon.type2.toLowerCase()]};
         } else {
-            return {name: pokemon.name, types: [pokemon.type1.toLowerCase()]};
+            return {name: pokemon.name, variant: pokemon.variant, types: [pokemon.type1.toLowerCase()]};
         }
     });
 
@@ -93,6 +93,13 @@ const getTypeInfo = async (enemyCollection) => {
                 pokemon.weak_to.splice(i, 1);
             }
         }
+
+        //remove immune_to types from weak_to list
+        pokemon.weak_to.forEach((type) => {
+            if(pokemon.immune_to.includes(type)) {
+                pokemon.weak_to.splice(pokemon.weak_to.indexOf(type), 1);
+            }
+        });
     }
 
     /* //determine users strengths
@@ -158,11 +165,14 @@ const getRecommendations = async (userTeam, enemy) => {
             if(pokemon.weak_to4x.length) {
 
                 //best options
-                pokemon.weak_to4x.forEach((type) => {
+                if(pokemon.weak_to4x.includes(userMon.types[0]) || pokemon.weak_to4x.includes(userMon.types[1])) {
+                    pokemon.best.push(userMon);
+                }
+                /* pokemon.weak_to4x.forEach((type) => {
                     if(userMon.types.includes(type)) {
                         pokemon.best.push(userMon);
                     }
-                });
+                }); */
 
                 //better options
                 if(pokemon.weak_to.includes(userMon.types[0]) && pokemon.weak_to.includes(userMon.types[1])) {
@@ -194,6 +204,32 @@ const getRecommendations = async (userTeam, enemy) => {
             }
 
         });
+
+        //sort pokemon so favorites are first
+        pokemon.best.sort((pokeA, pokeB) => {
+            return (pokeA.favorite > pokeB.favorite ) ? -1 : ((pokeB.favorite > pokeA.favorite) ? 1 : 0);
+        });
+    
+        pokemon.better.sort((pokeA, pokeB) => {
+            return (pokeA.favorite > pokeB.favorite ) ? -1 : ((pokeB.favorite > pokeA.favorite) ? 1 : 0);
+        });
+    
+        pokemon.good.sort((pokeA, pokeB) => {
+            return (pokeA.favorite > pokeB.favorite ) ? -1 : ((pokeB.favorite > pokeA.favorite) ? 1 : 0);
+        });
+
+        //eliminate options after 8
+        if(pokemon.best.length > 8) {
+            pokemon.best.splice(8);
+        }
+
+        if(pokemon.better.length > 8) {
+            pokemon.better.splice(8);
+        }
+
+        if(pokemon.good.length > 8) {
+            pokemon.good.splice(8);
+        }
         
     }
 
