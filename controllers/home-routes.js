@@ -46,15 +46,12 @@ router.get('/collection', withAuth, async (req, res) => {
 });
 
 router.get('/recommendations', withAuth, async (req, res) => {
-<<<<<<< HEAD
-    res.render('recommendations', { loggedIn: req.session.loggedIn, email: req.session.email })
-=======
     const pokemonModels = await Pokemon.findAll({
         order: [['pokedex_id', 'ASC'], ['variant', 'ASC']]
     });
     const pokemon = pokemonModels.map(pkModel => pkModel.get({plain: true}));
 
-    res.render('recommendations', { loggedIn: req.session.loggedIn, pokemon })
+    res.render('recommendations', { loggedIn: req.session.loggedIn, pokemon, email: req.session.email })
 });
 
 router.get('/add', withAuth, async (req, res) => {
@@ -87,12 +84,11 @@ router.get('/add', withAuth, async (req, res) => {
         const pokemon = pokemonData.map(pkModel => pkModel.get({plain: true}))
                                    .filter(pkModel => pkModel.users_pokemons.length == 0 );
         
-        res.render('add', { loggedIn: req.session.loggedIn, pokemon });
+        res.render('add', { loggedIn: req.session.loggedIn, pokemon, email: req.session.email });
     } catch (err) {
         console.error(err);
         res.status(500).json(err);
     }
->>>>>>> 6b9345f436f65576499d12c0fc47e19309ce7f69
 });
 
 router.get('/login', async (req, res) => {
