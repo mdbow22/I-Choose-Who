@@ -11,20 +11,24 @@ $('#by-pokemon-form').on('submit', async (event) => {
     // TODO show modal if no pokemon have been selected
     return;
   }
-  console.log(pokemonIds); // TODO remove console.log
+  
   $('#by-pokemon-submit-button').addClass('is-loading');
   
+
   const response = await fetch(
-    `/api/recs`,
+    `/api/recs/`,
     {
       method: 'POST',
-      body: JSON.stringify({ pokemon: pokemonIds })
+      body: JSON.stringify({ pokemon: pokemonIds }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
     }
   );
   const recData = await response.json();
   
-  // TODO process and display response
-  console.log(recData);
+  // process and display response
+  showResultsForPokemon(recData);
   
   $('#by-pokemon-submit-button').removeClass('is-loading');
 
@@ -48,11 +52,41 @@ $('#by-type-form').on('submit', async (event) => {
   $('#by-type-submit-button').removeClass('is-loading');
 });
 
+function showResultsForPokemon(recData) {
+  // hide/unhide relevant sections
+  $('#type-recommendation-results').addClass('is-hidden');
+  $('#by-pokemon-recommendation-results').removeClass('is-hidden');
+
+  populateEnemyPokemonSection('pk1', recData[0])
+  if (recData.length > 1) {
+    populateEnemyPokemonSection('pk2', recData[1]);
+    $('#pk2-container').removeClass('is-hidden');
+  } else {
+    $('#pk2-container').addClass('is-hidden');
+  }
+  if (recData.length > 2) {
+    populateEnemyPokemonSection('pk3', recData[2]);
+    $('#pk3-container').removeClass('is-hidden');
+  } else {
+    $('#pk3-container').addClass('is-hidden');
+  }
+}
+
+function populateEnemyPokemonSection(section, pokemonData) {
+  // show information about the enemy pokemon
+  $(`#enemy-${section}-container`).empty();
+  $(`#enemy-${section}-container`).append(createEnemyCard(pokemonData));
+
+  // populate recommendations for this pokemon
+  populateRecommendationsSubsection(section + '-best', pokemonData.best);
+  populateRecommendationsSubsection(section + '-better', pokemonData.better);
+  populateRecommendationsSubsection(section + '-good', pokemonData.good);
+}
+
 function showResultsForType(recData, type) {
   // hide/unhide relevant sections and 
-  $('#recommendation-results').removeClass('is-hidden');
-  $('#enemy-type-info').removeClass('is-hidden');
-  $('#enemy-pokemon-info').addClass('is-hidden');
+  $('#type-recommendation-results').removeClass('is-hidden');
+  $('#by-pokemon-recommendation-results').addClass('is-hidden');
 
   // show general info about type
   $('#enemy-type-span').text(capitalizeFirstLetter(type));
@@ -70,14 +104,16 @@ function showResultsForType(recData, type) {
   );
 
   // populate recommendations
-  populateRecommendationsSubsection('best', recData.best);
-  populateRecommendationsSubsection('better', recData.better);
-  populateRecommendationsSubsection('good', recData.good);
+  populateRecommendationsSubsection('type-best', recData.best);
+  populateRecommendationsSubsection('type-better', recData.better);
+  populateRecommendationsSubsection('type-good', recData.good);
 }
 
 /**
  * Populates pokemon from pokemonList into section of DOM identified by section
- * @param {string} section - either 'best', 'better', or 'good' 
+ * @param {string} section - a concatenation of one of ['type', 'pk1', 'pk2', 'pk3'],
+ *                           '-', and one of ['best', 'better', 'good']
+ *                           eg. type-best 
  * @param {Array} pokemonList 
  */
 function populateRecommendationsSubsection(section, pokemonList) {
@@ -108,6 +144,8 @@ function populateRecommendationsSubsection(section, pokemonList) {
  * @returns 
  */
 function createCard(pokemon) {
+  const name_plus_variant = pokemon.name +
+                            (pokemon.variant ? ', ' + pokemon.variant : '' );
   return $.parseHTML(`<div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
 <div class="card">
   <div class="card-content">
@@ -115,20 +153,62 @@ function createCard(pokemon) {
       <div class="media-left">
         <figure class="image is-96x96">
           <img src="${pokemon.imageURL ?? '/img/icw_hollow_square_96.png'}"
-            alt="${pokemon.name} sprite">
+            alt="${name_plus_variant} sprite">
         </figure>
       </div>
       <div class="media-content">
         <p class="title is-4">
-          <span class="pokemon-recommendation-name">${pokemon.name}</span>
+          <span class="pokemon-recommendation-name">${name_plus_variant}</span>
           ${pokemon.favorite ? '<span class="icon pokemon-recommendation-is-favorite"><i class="fas fa-star has-text-warning"></i></span>' : '' }
         </p>
-        <p class="subtitle is-6 pokemon-recommendation-type">${pokemon.types.map(capitalizeFirstLetter).join(', ')}</p>
+        <p class="subtitle is-6 pokemon-recommendation-type">${typeListToString(pokemon.types)}</p>
       </div>
     </div>
   </div>
 </div>
 </div>`);
+}
+
+/**
+ * Creates a DOM node for a card for the given pokemon 
+ * @param {Object} pokemon 
+ * @returns 
+ */
+function createEnemyCard(pokemon) {
+  const name_plus_variant = pokemon.name +
+                            (pokemon.variant ? ', ' + pokemon.variant : '' )
+  return $.parseHTML(`<div class="card">
+  <div class="card-content">
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-96x96">
+          <img src="${pokemon.imageURL ?? '/img/icw_hollow_square_96.png'}"
+            alt="${name_plus_variant} sprite">
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="title is-4">
+          <span class="pokemon-enemy-name">${name_plus_variant}</span>
+        </p>
+        <p class="subtitle is-6 pokemon-recommendation-type">${typeListToString(pokemon.types)}</p>
+      </div>
+    </div>
+    <div class="content">
+      <ul>
+        ` + //TODO: Uncomment when strong against is available <li class="strong-against-li">Strong against: <span class="strong-against-span">${typeListToString(pokemon.strong_against) || 'N/A'}</span></li>
+        `<li class="weak-against-li">Weak against: <span class="weak-against-span">${typeListToString(pokemon.weak_to) || 'N/A'}</span></li>
+        <li class="weak-against-li">Weak (4x) against: <span class="weak-4x-against-span">${typeListToString(pokemon.weak_to4x) || 'N/A'}</span></li>
+        <li class="resists-li">Resists: <span class="resists-span">${typeListToString(pokemon.resists) || 'N/A'}</span></li>
+        <li class="immune-li">Immune: <span class="immune-span">${typeListToString(pokemon.immune_to) || 'N/A'}</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+`);
+}
+
+function typeListToString(typeList) {
+  return typeList.map(capitalizeFirstLetter).join(', ')
 }
 
 function capitalizeFirstLetter(str) {
