@@ -18,9 +18,9 @@ const pokemonSeeds = () => {
             }
 
             if(allPokemon[i].form === 'Galarian') {
-                seedObj.variant = 'galar';
+                seedObj.variant = 'Galar';
             } else if(allPokemon[i].form === 'Alola') {
-                seedObj.variant = 'alola'; 
+                seedObj.variant = 'Alola'; 
             }
 
             seedArray.push(seedObj);
