@@ -9,6 +9,7 @@
           <div class="select is-multiple search-list">
             <select id="pokemon-to-add" required multiple>
               <option value="">Click or type here to search pokémon</option>
+              {{!-- TODO: refactor into partial --}}
               {{#each pokemon as |pokemon|}}
                 <option value="{{pokemon.id}}">{{pokemon.pokedex_id}}.
                   {{pokemon.name}}{{#if pokemon.variant}},
