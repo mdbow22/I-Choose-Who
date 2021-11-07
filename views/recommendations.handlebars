@@ -1,1 +1,528 @@
-<p>GET RECOMMENDATIONS</p>
+<div class="container">
+  
+  <h1 class="title is-2">Get Battle Recommendations</h1>
+  <section class="content">
+    <p>If you want recommendations for which pokémon to use in a battle, just do the following.</p>
+    <ol>
+      <li>Pick the type(s) of pokemon or the specific pokémon used by your opponent.</li>
+      <li>Hit the "Gimme some recommendations" button.</li>
+      <li>Recomendations will appear below.</li>
+    </ol>
+  </section>
+
+  <form id="by-type-form">
+    <div class="field">
+      <label class="label" for="type-picker">Pick opponent's types</label>
+      <div class="control">
+        <div class="select">
+          <select id="type-picker">
+            <option value="normal">Normal</option>
+            <option value="fire">Fire</option>
+            <option value="water">Water</option>
+            <option value="grass">Grass</option>
+            <option value="electric">Electric</option>
+            <option value="ice">Ice</option>
+            <option value="fighting">Fighting</option>
+            <option value="poison">Poison</option>
+            <option value="ground">Ground</option>
+            <option value="flying">Flying</option>
+            <option value="psychic">Psychic</option>
+            <option value="bug">Bug</option>
+            <option value="rock">Rock</option>
+            <option value="ghost">Ghost</option>
+            <option value="dark">Dark</option>
+            <option value="dragon">Dragon</option>
+            <option value="steel">Steel</option>
+            <option value="fairy">Fairy</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <button id="by-type-submit-button" class="button is-link" type="submit">Gimme some recommendations</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="subtitle my-3">- or -</div>
+
+  <form id="by-pokemon-form">
+    <div class="field">
+      <label class="label" for="pokemon-picker">Pick opponent's pokémon (up to 3)</label>
+      <div class="control">
+        <div class="select is-multiple search-list">
+          <select id="pokemon-picker" required multiple>
+            <option value="">Click or type here to search pokémon</option>
+            {{!-- TODO: refactor into partial --}}
+            {{#each pokemon as |pokemon|}}
+                <option value="{{pokemon.id}}">{{pokemon.pokedex_id}}.
+                  {{pokemon.name}}{{#if pokemon.variant}},
+                    {{pokemon.variant}} ({{pokemon.type1}}{{#if pokemon.type2}}
+                                                             / {{pokemon.type2}}{{/if}})
+                  {{/if}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <button id="by-pokemon-submit-button" class="button is-link" type="submit">Gimme some recommendations</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="container mt-6 is-hidden" id="recommendation-results">
+  <h1 class="title is-2">Your Recommendations</h1>
+  <section id="enemy-info-subsection">
+    <!-- Show this on the client side if the player specified a type. -->
+    <div id="enemy-type-info" class="is-hidden">
+      <h2 class="title is-4">Enemy Type: <span id="enemy-type-span">Selection for enemy type goes here</span></h2>
+      <div class="content">
+        <ul class="enemy-type-info-list">
+          <li>Strong against:
+            <span id="enemy-type-strong-against-list">
+              Normal, Ground
+            </span>
+          </li>
+
+          <li>Weak against:
+            <span id="enemy-type-weak-against-list">
+              Normal, Ground
+            </span>
+          </li>
+
+          <li>Resists:
+            <span id="enemy-type-resists-list">
+              Normal
+            </span>
+          </li>
+
+          <li>Immune to:
+            <span id="enemy-type-immune-list">
+              Normal
+            </span>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+    <!-- TODO Show this if the player specified enemy pokemon. -->
+    <div id="enemy-pokemon-info" class="is-hidden">
+      <h2 class="title is-4">Enemy Pokémon</h2>
+      <div class="columns" id="enemy-pokemon-cards">
+        <!-- TODO card to generate, up to 3 -->
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">Celesteela</p>
+                  <p class="subtitle is-6">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">Celesteela</p>
+                  <p class="subtitle is-6">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">Celesteela</p>
+                  <p class="subtitle is-6">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <section id="recommendations-subsection">
+
+    <div id="best-recommendations" class="mt-6">
+      <h2 class="title">Best Pokémon to Use</h2>
+      <!-- TODO Show this if the player has no pokemon that meet the best criteria. -->
+      <div class="content is-hidden" id="no-best-pokemon-div">
+        <p>Sorry, but none of your pokémon are best against this enemy. Keep collecting!</p>
+      </div>
+      <!-- TODO Show this if the player has pokemon that meet the best criteria. -->
+      <div class="columns is-multiline is-hidden" id="best-pokemon-cards">
+        <!-- TODO card to generate, up to 3 -->
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                    <span class="icon pokemon-recommendation-is-favorite">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite is-hidden">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div id="better-recommendations" class="mt-6">
+      <h2 class="title">Better than Good Pokémon to Use</h2>
+      <!-- TODO Show this if the player has no pokemon that meet the better criteria. -->
+      <div class="content is-hidden" id="no-better-pokemon-div">
+        <p>Sorry, but none of your pokémon are better against this enemy. Keep collecting!</p>
+      </div>
+      <!-- TODO Show this if the player has pokemon that meet the better criteria. -->
+      <div class="columns is-multiline is-hidden" id="better-pokemon-cards">
+        <!-- TODO card to generate, up to 3 -->
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite is-hidden">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div id="good-recommendations" class="mt-6">
+      <h2 class="title">Good Pokémon to Use</h2>
+      <!-- TODO Show this if the player has no pokemon that meet the best criteria. -->
+      <div class="content is-hidden" id="no-good-pokemon-div">
+        <p>Sorry, but none of your pokémon are good against this enemy. Keep collecting!</p>
+      </div>
+      <!-- TODO Show this if the player has pokemon that meet the best criteria. -->
+      <div class="columns is-multiline is-hidden" id="good-pokemon-cards">
+        <!-- TODO card to generate, up to 3 -->
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/797.png"
+                      alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">
+                    <span class="icon pokemon-recommendation-is-favorite is-hidden">
+                      <i class="fas fa-star has-text-warning"></i>
+                    </span>
+                    <span class="pokemon-recommendation-name">Celesteela</span>
+                  </p>
+                  <p class="subtitle is-6 pokemon-recommendation-type">Steel / Flying</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <ul>
+                  <li class="weak-against-li">Weak against: <span class="weak-against-span">Normal</span></li>
+                  <li class="resists-li">Resists: <span class="resists-span">Normal</span></li>
+                  <li class="immune-li">Immune: <span class="immune-span">Normal</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js" integrity="sha512-pF+DNRwavWMukUv/LyzDyDMn8U2uvqYQdJN0Zvilr6DDo/56xPDZdDoyPDYZRSL4aOKO/FGKXTpzDyQJ8je8Qw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/js/recommendations.js"></script>
