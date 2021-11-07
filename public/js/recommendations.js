@@ -11,9 +11,9 @@ $('#by-pokemon-form').on('submit', async (event) => {
     // TODO show modal if no pokemon have been selected
     return;
   }
-  
+  console.log(pokemonIds); // TODO remove console.log
   $('#by-pokemon-submit-button').addClass('is-loading');
-  // TODO: replace with proper event handler for form
+  
   const response = await fetch(
     `/api/recs`,
     {
@@ -23,7 +23,7 @@ $('#by-pokemon-form').on('submit', async (event) => {
   );
   const recData = await response.json();
   
-  
+  // TODO process and display response
   console.log(recData);
   
   $('#by-pokemon-submit-button').removeClass('is-loading');
