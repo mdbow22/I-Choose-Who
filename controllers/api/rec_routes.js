@@ -8,7 +8,7 @@ const { Pokemon, User } = require('../../models');
 router.post('/', async (req, res) => {
     try {
         //get user's pokemon
-        const userCollection = await User.findByPk(1, {
+        const userCollection = await User.findByPk(req.session.userId, {
             include: [{
                     model: Pokemon,
                     through: {
@@ -25,8 +25,6 @@ router.post('/', async (req, res) => {
                 return {name: pokemon.name, variant: pokemon.variant,  favorite: pokemon.users_pokemon.favorite, types: [pokemon.type1.toLowerCase()]};
             }
         });
-
-        console.log(collection);
 
         //get recommendations
         const recommendations = await getRecommendations(collection, req.body.pokemon);
@@ -45,7 +43,7 @@ router.get('/:type', async (req, res) => {
 
     try {
         //get user's pokemon
-    const userCollection = await User.findByPk(1 /*req.session.userId*/, {
+    const userCollection = await User.findByPk(req.session.userId, {
         include: [{
                 model: Pokemon,
                 through: {

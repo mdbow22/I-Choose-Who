@@ -4,9 +4,6 @@ const {Op} = require('sequelize');
 
 const P = new Pokedex();
 
-const type = 'ghost';
-const userCollection = ['Vaporeon','Flareon','Jolteon','Leafeon','Glaceon','Umbreon','Espeon','Sylveon','Dragonite','Graveler','Sandslash','Steelix','Eevee','Scizor','Machamp','Misdreavus'];
-
 //get typeinfo for type selected
 const typeInfo = async (type) => {
     const info = await P.getTypeByName(type);
