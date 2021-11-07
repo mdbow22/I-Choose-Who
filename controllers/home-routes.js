@@ -47,7 +47,12 @@ router.get('/collection', withAuth, async (req, res) => {
 });
 
 router.get('/recommendations', withAuth, async (req, res) => {
-    res.render('recommendations', { loggedIn: req.session.loggedIn })
+    const pokemonModels = await Pokemon.findAll({
+        order: [['pokedex_id', 'ASC'], ['variant', 'ASC']]
+    });
+    const pokemon = pokemonModels.map(pkModel => pkModel.get({plain: true}));
+
+    res.render('recommendations', { loggedIn: req.session.loggedIn, pokemon })
 });
 
 router.get('/add', withAuth, async (req, res) => {
