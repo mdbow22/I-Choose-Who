@@ -4,6 +4,22 @@ const { User, Pokemon, UsersPokemon } = require('../models');
 // const sequelize = require('../config/connection');
 const {Op} = require('sequelize');
 
+const Pokedex = require('pokedex-promise-v2');
+const P = new Pokedex();
+
+const imageInfo = async (name) => {
+    
+    try {
+        const poke = await P.getPokemonByName(name);
+        const pokeImage = poke.sprites.front_default
+        console.log(pokeImage)
+        return pokeImage;
+    } catch(err) {
+        console.log(err);
+    }
+
+}
+
 router.get('/', async (req, res) => {
     res.render('homepage', { loggedIn: req.session.loggedIn, email: req.session.email })
 });
@@ -12,7 +28,7 @@ router.get('/collection', withAuth, async (req, res) => {
     try {
         const usersPoke = await User.findByPk(req.session.userId, {include: [{model: Pokemon}] });
         const usersPokePlain = usersPoke.get({plain:true});
-        console.log(usersPokePlain)
+        
         const collection = [];
 
         if (usersPokePlain.pokemons){
@@ -28,14 +44,21 @@ router.get('/collection', withAuth, async (req, res) => {
                 pokemon["variant"] = usersPokePlain.pokemons[i].variant;
                 pokemon["favorite"] = usersPokePlain.pokemons[i].users_pokemon.favorite;
                 pokemon["createdAt"] = usersPokePlain.pokemons[i].users_pokemon.createdAt;
-    
+                
+                if (usersPokePlain.pokemons[i].variant){
+                   const lowerCaseName = usersPokePlain.pokemons[i].name.toLowerCase();
+                   const lowerCaseVariant = usersPokePlain.pokemons[i].variant.toLowerCase();
+                   pokemon["image"] = await imageInfo(`${lowerCaseName}-${lowerCaseVariant}`)
+                } else {
+                    const lowerCaseName = usersPokePlain.pokemons[i].name.toLowerCase();
+                    pokemon["image"] = await imageInfo(`${lowerCaseName}`)
+                }
+                
                 collection.push(pokemon);
-    
+                 
             }
         }
-
-        // console.log(collection);
-
+        
         res.render('mypokollection', { collection, loggedIn: req.session.loggedIn, email: req.session.email });
 
     } catch(err) {
