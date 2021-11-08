@@ -18,6 +18,47 @@ const typeInfo = async (type) => {
     return typeEffectiveness;
 }
 
+const getPics = async (recResults) => {
+
+    if(recResults.length < 1) {
+        return [];
+    }
+
+    //create array of pokemon to fetch
+    const pokemon = recResults.map(pokemon => {
+        if(pokemon.variant) {
+            //if pokemon is a variant, concatenate name with variant for pokeAPI
+            return `${pokemon.name.toLowerCase()}-${pokemon.variant.toLowerCase()}`;
+        } else {
+            return pokemon.name.toLowerCase();
+        }
+    });
+
+    //fetch data from PokeAPI
+    const pokeData = await P.getPokemonByName(pokemon);
+
+    const pics = pokeData.map((pokemon) => {
+        
+        return {
+            name: pokemon.species.name[0].toUpperCase() + pokemon.species.name.substring(1),
+            spriteUrl: pokemon.sprites.front_default,
+            variant: (pokemon.name.includes('alola') || pokemon.name.includes('galar')) ? pokemon.name.substring(pokemon.name.length - 5) : null
+        }
+
+    });
+
+    //console.log(recResults);
+
+    //add pic to each enemy pokemon
+    recResults.forEach((el, i) => {
+        el.imageURL = pics[i].spriteUrl;
+    });
+
+    //console.log(pics);
+
+    return recResults;
+}
+
 const recsFromType = async (userCollection, type) => {
     const typeData = await typeInfo(type);
 
@@ -94,6 +135,8 @@ const recsFromType = async (userCollection, type) => {
     if(typeData.good.length > 8) {
         typeData.good.splice(8);
     }
+
+    await Promise.all([getPics(typeData.best),getPics(typeData.better),getPics(typeData.good)]);
 
     return typeData;
 };

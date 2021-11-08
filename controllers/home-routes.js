@@ -3,6 +3,9 @@ const withAuth = require('../utils/auth');
 const { User, Pokemon, UsersPokemon } = require('../models');
 // const sequelize = require('../config/connection');
 const {Op} = require('sequelize');
+const Pokedex = require('pokedex-promise-v2');
+
+const P = new Pokedex();
 
 router.get('/', async (req, res) => {
     res.render('homepage', { loggedIn: req.session.loggedIn, email: req.session.email })
@@ -32,6 +35,50 @@ router.get('/collection', withAuth, async (req, res) => {
                 collection.push(pokemon);
     
             }
+
+            //get pics for each pokemon
+            const getPics = async (recResults) => {
+
+                if(recResults.length < 1) {
+                    return [];
+                }
+            
+                //create array of pokemon to fetch
+                const pokemon = recResults.map(pokemon => {
+                    if(pokemon.variant) {
+                        //if pokemon is a variant, concatenate name with variant for pokeAPI
+                        return `${pokemon.name.toLowerCase()}-${pokemon.variant.toLowerCase()}`;
+                    } else {
+                        return pokemon.name.toLowerCase();
+                    }
+                });
+            
+                //fetch data from PokeAPI
+                const pokeData = await P.getPokemonByName(pokemon);
+            
+                const pics = pokeData.map((pokemon) => {
+                    
+                    return {
+                        name: pokemon.species.name[0].toUpperCase() + pokemon.species.name.substring(1),
+                        spriteUrl: pokemon.sprites.front_default,
+                        variant: (pokemon.name.includes('alola') || pokemon.name.includes('galar')) ? pokemon.name.substring(pokemon.name.length - 5) : null
+                    }
+            
+                });
+            
+                //console.log(recResults);
+            
+                //add pic to each enemy pokemon
+                recResults.forEach((el, i) => {
+                    el.imageURL = pics[i].spriteUrl;
+                });
+            
+                //console.log(pics);
+            
+                return recResults;
+            }
+
+            await getPics(collection);
         }
 
         // console.log(collection);
