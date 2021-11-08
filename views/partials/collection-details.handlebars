@@ -1,0 +1,42 @@
+        <div class="column is-half is-one-third-desktop is-one-quarter-fullhd" id="{{id}}">
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-96x96">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{pokedex_id}}.png" alt="Placeholder image">
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">{{name}} {{#if variant}}({{variant}}){{/if}}</p>
+                  <p class="subtitle is-6">{{type1}}{{#if type2}}, {{/if}}{{type2}}</p>
+                </div>
+              </div>
+          
+              <div class="content">
+                <ul>
+                  <li>Pokemon No.: <span class="pokemon-number">{{pokedex_id}}</span></li>
+                  <li>Date Added: <span class="date-added-to-collection">{{format_date createdAt}}</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <footer class="card-footer">
+
+                
+                <a class="card-footer-item fav-btn" aria-label="unfavorite pokemon">
+                    <span class="icon">
+                        <i class="{{#if favorite}}fas{{else}}far{{/if}} fa-star has-text-warning" id="icon"></i>
+                    </span>
+                </a>
+                
+                <a class="card-footer-item remove-pokemon del-btn" aria-label="remove pokemon from collection">
+                    <span class="icon has-text-grey-light">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </a>
+
+            </footer>
+
+          </div>
+        </div>

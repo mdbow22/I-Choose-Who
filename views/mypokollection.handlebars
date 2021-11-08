@@ -1,1 +1,18 @@
-<p>MY POKOLLECTION</p>
+  <main class="section">
+    <div class="container">
+      <div class="columns is-multiline">
+        <div class="column">
+          <a href="./add" class="button is-link is-rounded">Add New Pokemon</a>
+        </div>
+
+      <!-- Pokemon collection card -->
+    
+    <div class="columns is-multiline">
+        {{#each collection}}
+        {{>collection-details}}
+        {{/each}}
+    </div>
+
+  </main>
+
+  <script src="./js/collection-fav-del.js"></script>
