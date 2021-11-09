@@ -16,14 +16,14 @@ $('#by-pokemon-form').on('submit', async (event) => {
   
 
   const response = await fetch(
-    `/api/recs/`,
+    `/api/recs?pokes=${pokemonIds.toString()}`/* ,
     {
       method: 'POST',
       body: JSON.stringify({ pokemon: pokemonIds }),
       headers: {
         'Content-Type': 'application/json'
       },
-    }
+    } */
   );
   const recData = await response.json();
   
