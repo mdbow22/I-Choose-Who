@@ -18,21 +18,17 @@ const typeInfo = async (type) => {
     return typeEffectiveness;
 }
 
-const getPics = async (recResults) => {
+const getPics = async (recResults) => { // TODO: refactor DRY
 
     if(recResults.length < 1) {
         return [];
     }
 
-    //create array of pokemon to fetch
-    const pokemon = recResults.map(pokemon => {
-        if(pokemon.variant) {
-            //if pokemon is a variant, concatenate name with variant for pokeAPI
-            return `${pokemon.name.toLowerCase()}-${pokemon.variant.toLowerCase()}`;
-        } else {
-            return pokemon.name.toLowerCase();
-        }
-    });
+    //create array of pokemon names to fetch
+    const pokemon = recResults.map(pokemon =>
+        pokemon.name.toLowerCase().replace('♂', '-m').replace('♀', '-f')
+        + (pokemon.variant ? '-' + pokemon.variant.toLowerCase() : '')
+    );
 
     //fetch data from PokeAPI
     const pokeData = await P.getPokemonByName(pokemon);

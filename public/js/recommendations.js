@@ -134,7 +134,7 @@ function populateRecommendationsSubsection(section, pokemonList) {
   cardsContainer.empty();
   
   // sort favorites first and append to DOM
-  pokemonList.sort((p1, p2) => p1.favorite - p2.favorite);
+  pokemonList.sort((p1, p2) => p2.favorite - p1.favorite);
   pokemonList.forEach(pokemon => cardsContainer.append(createCard(pokemon)));
 }
 
