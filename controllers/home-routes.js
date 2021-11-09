@@ -15,7 +15,7 @@ router.get('/collection', withAuth, async (req, res) => {
     try {
         const usersPoke = await User.findByPk(req.session.userId, {include: [{model: Pokemon}] });
         const usersPokePlain = usersPoke.get({plain:true});
-        console.log(usersPokePlain)
+        //console.log(usersPokePlain)
         const collection = [];
 
         if (usersPokePlain.pokemons){
