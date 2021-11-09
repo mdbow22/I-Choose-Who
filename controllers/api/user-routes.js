@@ -5,16 +5,17 @@ const bcrypt = require('bcrypt');
 // Create new user/sign up
 router.post('/', async (req, res) => {
 
-    const hashedPw = await bcrypt.hash(req.body.password, 10)
+    //const hashedPw = await bcrypt.hash(req.body.password, 10)
 
     try {
         const newUser = await User.create({
             email: req.body.email,
-            password: hashedPw,
+            password: req.body.password,
         });
 
         req.session.userId = newUser.id;
         req.session.loggedIn = true;
+        req.session.email = req.body.email;
 
         req.session.save(() => {
             res.status(200).json(newUser);
