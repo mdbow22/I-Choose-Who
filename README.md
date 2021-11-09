@@ -2,7 +2,7 @@
 
 ## Description
 
-An app that helps users create pokemon teams for pokemon Go based on their collection and opposing pokemon. After creating an account or signing in to an existing account, users can edit their Pokemon collection by adding, removing or marking as favorite on the Pokollection page. On the Recommendations page users can recieve helpful suggestions against a single type of Pokemon or a specific Pokemon, up to three, 
+An app that helps users create pokemon teams for pokemon Go based on their collection and opposing pokemon. After creating an account or signing in to an existing account, users can edit their Pokemon collection by adding, removing or marking as favorite on the Pokollection page. On the Recommendations page users can recieve helpful suggestions against a single type of Pokemon or a specific Pokemon, up to three. The suggested Pokemon are split into three categories in order of effectiveness: Best, Better than Good, and Good.
 
 Link to the app on Heroku: [I Choose Who](https://blooming-basin-23447.herokuapp.com/)
 
