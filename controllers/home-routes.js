@@ -3,9 +3,8 @@ const withAuth = require('../utils/auth');
 const { User, Pokemon, UsersPokemon } = require('../models');
 // const sequelize = require('../config/connection');
 const {Op} = require('sequelize');
-const Pokedex = require('pokedex-promise-v2');
+const {getPics} = require('../utils/pokedex');
 
-const P = new Pokedex();
 
 router.get('/', async (req, res) => {
     res.render('homepage', { loggedIn: req.session.loggedIn, email: req.session.email })
@@ -36,43 +35,7 @@ router.get('/collection', withAuth, async (req, res) => {
     
             }
 
-            //get pics for each pokemon
-            const getPics = async (recResults) => { // TODO: refactor DRY
 
-                if(recResults.length < 1) {
-                    return [];
-                }
-            
-                //create array of pokemon names to fetch
-                const pokemon = recResults.map(pokemon =>
-                    pokemon.name.toLowerCase().replace('♂', '-m').replace('♀', '-f')
-                    + (pokemon.variant ? '-' + pokemon.variant.toLowerCase() : '')
-                );
-            
-                //fetch data from PokeAPI
-                const pokeData = await P.getPokemonByName(pokemon);
-            
-                const pics = pokeData.map((pokemon) => {
-                    
-                    return {
-                        name: pokemon.species.name[0].toUpperCase() + pokemon.species.name.substring(1),
-                        spriteUrl: pokemon.sprites.front_default,
-                        variant: (pokemon.name.includes('alola') || pokemon.name.includes('galar')) ? pokemon.name.substring(pokemon.name.length - 5) : null
-                    }
-            
-                });
-            
-                //console.log(recResults);
-            
-                //add pic to each enemy pokemon
-                recResults.forEach((el, i) => {
-                    el.imageURL = pics[i].spriteUrl;
-                });
-            
-                //console.log(pics);
-            
-                return recResults;
-            }
 
             await getPics(collection);
         }

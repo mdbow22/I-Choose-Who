@@ -1,8 +1,8 @@
 const {Pokemon, UsersPokemon } = require('../../models');
 const Pokedex = require('pokedex-promise-v2');
 const {Op} = require('sequelize');
-
-const P = new Pokedex();
+const P = require('../../utils/pokedex')
+// const P = new Pokedex();
 
 //Pull enemy pokemon from database with typing
 
@@ -123,44 +123,6 @@ const getTypeInfo = async (enemyCollection) => {
     return enemyTeam;
 }
 
-//get sprites from PokeApi
-const getPics = async (recResults) => { // TODO: refactor DRY
-
-    if(recResults.length < 1) {
-        return [];
-    }
-
-    //create array of pokemon names to fetch
-    const pokemon = recResults.map(pokemon =>
-        pokemon.name.toLowerCase().replace('♂', '-m').replace('♀', '-f')
-        + (pokemon.variant ? '-' + pokemon.variant.toLowerCase() : '')
-    );
-
-    //fetch data from PokeAPI
-    const pokeData = await P.getPokemonByName(pokemon);
-
-    const pics = pokeData.map((pokemon) => {
-        
-        return {
-            name: pokemon.species.name[0].toUpperCase() + pokemon.species.name.substring(1),
-            spriteUrl: pokemon.sprites.front_default,
-            variant: (pokemon.name.includes('alola') || pokemon.name.includes('galar')) ? pokemon.name.substring(pokemon.name.length - 5) : null
-        }
-
-    });
-
-    //console.log(recResults);
-
-    //add pic to each enemy pokemon
-    recResults.forEach((el, i) => {
-        el.imageURL = pics[i].spriteUrl;
-    });
-
-    //console.log(pics);
-
-    return recResults;
-}
-
 const getRecommendations = async (userTeam, enemy) => {
 
     //Placeholder for call to database to fetch user's collection
@@ -263,10 +225,14 @@ const getRecommendations = async (userTeam, enemy) => {
             pokemon.good.splice(8);
         }
 
-        await Promise.all([getPics(pokemon.best),getPics(pokemon.better),getPics(pokemon.good)]);
+        await Promise.all([
+            P.getPics(pokemon.best),
+            P.getPics(pokemon.better),
+            P.getPics(pokemon.good)
+        ]);
     }
 
-    await getPics(enemyTeam);
+    await P.getPics(enemyTeam);
 
     return enemyTeam;
 };
