@@ -58,6 +58,13 @@ const getTypeInfo = async (enemyCollection) => {
             } else {
                 pokemon.immune_to = type.damage_relations.no_damage_from.map(el => el.name);
             }
+
+            //map what types pokemon is strong against
+            if(pokemon.strong_against) {
+                pokemon.strong_against = [...new Set(pokemon.strong_against.concat(type.damage_relations.double_damage_to.map((type) => type.name)))];
+            } else {
+                pokemon.strong_against = type.damage_relations.double_damage_to.map(el => el.name);
+            }
         });
         
         //determine 4x weak_to
