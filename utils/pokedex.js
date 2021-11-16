@@ -40,4 +40,6 @@ const getPics = async (pokemonList) => {
   return pokemonList;
 }
 
-module.exports = { getPics };
+P.getPics = getPics;
+
+module.exports = P;
