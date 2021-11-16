@@ -31,7 +31,7 @@ const getPics = async (pokemonList) => {
   const pokeData = await P.getPokemonByName(pokemonNamesToFetch);
 
 
-  //add pic to each enemy pokemon
+  //add pic for each pokemon
   pokemonList.forEach((pokemon, i) => {
     // pokemon.imageURL = pics[i].spriteUrl;
     pokemon.imageURL = pokeData[i].sprites.front_default;
