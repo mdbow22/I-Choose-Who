@@ -1,7 +1,7 @@
 const {Pokemon, UsersPokemon } = require('../../models');
 const Pokedex = require('pokedex-promise-v2');
 const {Op} = require('sequelize');
-
+const {getPics} = require('../../utils/pokedex')
 const P = new Pokedex();
 
 //Pull enemy pokemon from database with typing
@@ -124,42 +124,42 @@ const getTypeInfo = async (enemyCollection) => {
 }
 
 //get sprites from PokeApi
-const getPics = async (recResults) => { // TODO: refactor DRY
+// const getPics = async (recResults) => { // TODO: refactor DRY
 
-    if(recResults.length < 1) {
-        return [];
-    }
+//     if(recResults.length < 1) {
+//         return [];
+//     }
 
-    //create array of pokemon names to fetch
-    const pokemon = recResults.map(pokemon =>
-        pokemon.name.toLowerCase().replace('♂', '-m').replace('♀', '-f')
-        + (pokemon.variant ? '-' + pokemon.variant.toLowerCase() : '')
-    );
+//     //create array of pokemon names to fetch
+//     const pokemon = recResults.map(pokemon =>
+//         pokemon.name.toLowerCase().replace('♂', '-m').replace('♀', '-f')
+//         + (pokemon.variant ? '-' + pokemon.variant.toLowerCase() : '')
+//     );
 
-    //fetch data from PokeAPI
-    const pokeData = await P.getPokemonByName(pokemon);
+//     //fetch data from PokeAPI
+//     const pokeData = await P.getPokemonByName(pokemon);
 
-    const pics = pokeData.map((pokemon) => {
+//     const pics = pokeData.map((pokemon) => {
         
-        return {
-            name: pokemon.species.name[0].toUpperCase() + pokemon.species.name.substring(1),
-            spriteUrl: pokemon.sprites.front_default,
-            variant: (pokemon.name.includes('alola') || pokemon.name.includes('galar')) ? pokemon.name.substring(pokemon.name.length - 5) : null
-        }
+//         return {
+//             name: pokemon.species.name[0].toUpperCase() + pokemon.species.name.substring(1),
+//             spriteUrl: pokemon.sprites.front_default,
+//             variant: (pokemon.name.includes('alola') || pokemon.name.includes('galar')) ? pokemon.name.substring(pokemon.name.length - 5) : null
+//         }
 
-    });
+//     });
 
-    //console.log(recResults);
+//     //console.log(recResults);
 
-    //add pic to each enemy pokemon
-    recResults.forEach((el, i) => {
-        el.imageURL = pics[i].spriteUrl;
-    });
+//     //add pic to each enemy pokemon
+//     recResults.forEach((el, i) => {
+//         el.imageURL = pics[i].spriteUrl;
+//     });
 
-    //console.log(pics);
+//     //console.log(pics);
 
-    return recResults;
-}
+//     return recResults;
+// }
 
 const getRecommendations = async (userTeam, enemy) => {
 
