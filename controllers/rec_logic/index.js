@@ -26,6 +26,30 @@ const team = async (enemyPokemon) => {
     return array;
 };
 
+const removeImmunities = (userTeam, enemy) => {
+    let rec_team = userTeam.filter(userMon => {
+        if(userMon.types.length === 1 && enemy.immune_to.includes(userMon.types[0])) {
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    return rec_team;
+}
+
+const removeWeakPokemon = (userTeam, enemy) => {
+    let rec_team = userTeam.filter(userMon => {
+        if(enemy.strong_against.includes(userMon.types[0]) || enemy.strong_against.includes(userMon.types[1])) {
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    return rec_team;
+};
+
 const getRecommendations = async (userTeam, enemy) => {
 
     //Placeholder for call to database to fetch user's collection
@@ -80,25 +104,20 @@ const getRecommendations = async (userTeam, enemy) => {
          * doesn't account for pokemon that are weak to the enemy pokemon
          */
 
-        //remove pokemon from userTeam if enemy has immunity
+        //build rec_team array of pokemon suitable for recommendation
         rec_team = [];
 
+        //remove pokemon that have no effect on enemy pokemon
         if(pokemon.immune_to.length) {
-            rec_team = userTeam.filter(userMon => {
-                if(userMon.types.length === 1 && pokemon.immune_to.includes(userMon.types[0])) {
-                    return false;
-                } else {
-                    return true;
-                }
-            })
+            rec_team = removeImmunities(userTeam, pokemon);
         } else {
             rec_team = userTeam;
         }
 
         //remove pokemon that are weak to enemy
+        rec_team = removeWeakPokemon(rec_team, pokemon);
 
-
-        userTeam.forEach((userMon) => {
+        rec_team.forEach((userMon) => {
             //determine options
 
             //options if pokemon has 4xweak types

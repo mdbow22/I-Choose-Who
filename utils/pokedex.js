@@ -121,9 +121,7 @@ const getTypeInfo = async (team) => {
           }
       });
   }
-
   
-
   return team;
 }
 
