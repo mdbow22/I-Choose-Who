@@ -27,14 +27,14 @@ const team = async (enemyPokemon) => {
 };
 
 //Add strengths and weaknesses to user and enemy teams
-const getTypeInfo = async (enemyCollection) => {
+const getTypeInfo = async (team) => {
 
     //Get type info from database
-    const enemyTeam = await team(enemyCollection);
+    //const enemyTeam = await team(enemyCollection); delete if successful
     
 
     //Determine enemy weaknesses
-    for(const pokemon of enemyTeam) {
+    for(const pokemon of team) {
         const typeInfo = await P.getTypeByName(pokemon.types);
 
         typeInfo.forEach((type) => {
@@ -103,37 +103,17 @@ const getTypeInfo = async (enemyCollection) => {
         });
     }
 
-    /* //determine users strengths
-    for(const pokemon of userTeam) {
-        const typeInfo = await P.getTypeByName(pokemon.types);
-        if(pokemon.types.length > 1) {
-            
-        } else {
-            
-            //map what types pokemon is strong against  
-            if(typeInfo[0].damage_relations.double_damage_to.length > 0) {
-                pokemon.strong_against = typeInfo[0].damage_relations.double_damage_to.map(el => el.name);
-            }
-            
-            //map what types pokemon is weak against
-            if(typeInfo[0].damage_relations.half_damage_to.length > 0) {
-                pokemon.weak_against = typeInfo[0].damage_relations.half_damage_to.map(el => el.name);
-            }
+    
 
-            //map what types pokemon is immune to
-            if(typeInfo[0].damage_relations.no_damage_to.length > 0) {
-                pokemon.immune_to = typeInfo[0].damage_relations.no_damage_to.map(el => el.name);
-            }
-        }
-    } */
-
-    return enemyTeam;
+    return team;
 }
 
 const getRecommendations = async (userTeam, enemy) => {
 
     //Placeholder for call to database to fetch user's collection
-    const enemyTeam = await getTypeInfo(enemy);
+    const enemyTeam = await team(enemy);
+    await getTypeInfo(enemyTeam);
+    await getTypeInfo(userTeam);
 
     /**
      * Iterate over enemy team:
@@ -143,13 +123,21 @@ const getRecommendations = async (userTeam, enemy) => {
      * If enemyMon has weak_to4x category, find all pokemon in collection:
      *  Best pokemon = 2 4xWeak types or 4xWeak
      *  Better pokemon = 2 weak types
-     *  Good pokemon = 1 weak type
+     *  Good pokemon = no resistances
      * 
      * 
      * If enemyMon doesn't have weak_to4x category:
      *  best = 2 weak types
      *  better = 1 weak
      *  good = no resistances
+     * 
+     * Alternative Points system:
+     * 4x weak type = 2 points
+     * weak type = 1 point
+     * not resisted = 0 points
+     * resisted = -1 points
+     * immune = -2 points
+     * immune-to-enemy = 1 point
      * 
      * If list of recommendations empty: "You have no pokemon for this battle"
      */
@@ -158,6 +146,37 @@ const getRecommendations = async (userTeam, enemy) => {
         pokemon.best = [];
         pokemon.better = [];
         pokemon.good = [];
+
+        /**
+         * New Logic:
+         * Eliminate pokemon 3 types of pokemon - 
+         * 1. Pokemon that have no effect on enemy
+         * 2. Pokemon that are weak to enemy
+         */
+
+        /**
+         * Original Recommendation logic:
+         * Issues: iterates through entire collection,
+         * doesn't account for pokemon that are weak to the enemy pokemon
+         */
+
+        //remove pokemon from userTeam if enemy has immunity
+        rec_team = [];
+
+        if(pokemon.immune_to.length) {
+            rec_team = userTeam.filter(userMon => {
+                if(userMon.types.length === 1 && pokemon.immune_to.includes(userMon.types[0])) {
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+        } else {
+            rec_team = userTeam;
+        }
+
+        //remove pokemon that are weak to enemy
+
 
         userTeam.forEach((userMon) => {
             //determine options
