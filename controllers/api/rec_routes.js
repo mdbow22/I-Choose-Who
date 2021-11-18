@@ -25,8 +25,6 @@ router.get('/', async (req, res) => {
             }
         });
 
-        console.log(req.query);
-
         const enemyPokemon = req.query.pokes.split(',').map(el => parseInt(el,10));
 
         //get recommendations
